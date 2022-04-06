@@ -1,0 +1,128 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form enctype="multipart/form-data" onsubmit="PostMediaContent(this);return false;"
+      method="post">
+    <dl>
+        <dt>
+            <label for="name">File Name</label>
+        </dt>
+        <dd>
+            <input id="name" type="text"
+                   name="name" />
+        </dd>
+    </dl>
+
+    <dl>
+        <dt>
+            <label for="description">File Description</label>
+        </dt>
+        <dd>
+            <input id="description" type="text"
+                   name="description" />
+        </dd>
+    </dl>
+
+    <dl>
+        <dt>
+            <label for="FileUpload_FormFile">File</label>
+        </dt>
+        <dd>
+            <input id="FileUpload_FormFile" type="file"
+                   name="FileUpload.FormFile" />
+        </dd>
+    </dl>
+
+    <input type="submit" value="Upload Media" />
+
+    <div style="margin-top:15px">
+        <output name="result"></output>
+    </div>
+</form>
+
+<form 
+    onsubmit="PostContent(this);return false;"
+      method="post">
+    <dl>
+        <dt>
+            <label for="FileUpload_FormFile">File</label>
+        </dt>
+        <dd>
+           <input type="text" name="Name" />
+        </dd>
+    </dl>
+
+    <input type="submit" value="Post Content" />
+
+    <div style="margin-top:15px">
+        <output name="result"></output>
+    </div>
+</form>
+
+<div>
+    <button onclick="fetchData(); return false;">
+        Fetch Data
+    </button>
+    <div id="data"></div>
+</div>
+
+<script>
+    async function PostMediaContent (oFormElement) {
+        var resultElement = oFormElement.elements.namedItem("result");
+        const formData = new FormData(oFormElement);
+        debugger;
+        try {
+            const response = await fetch("/Content", {
+                method: 'POST',
+                body: formData,
+       
+                //headers: {
+                //    "Content-Type": "multipart/form-data; boundary=-14737809831466499882746641449",
+                //    "Accept": "multipart/form-data"
+                //}
+            });
+            var data = await response.text();
+            console.log(data);
+            resultElement.value = 'Result: ' + response.status + ' ' + response.statusText;
+        }
+        catch (error) {
+          console.error('Error:', error);
+        }
+    }
+
+    async function PostContent(oFormElement) {
+        var resultElement = oFormElement.elements.namedItem("result");
+        const formData = new FormData(oFormElement);
+        debugger;
+        try {
+            const response = await fetch("/Content", {
+                method: 'POST',
+                body: formData
+            });
+            var data = await response.text();
+            resultElement.value = 'Result: ' + response.status + ' ' +
+                response.statusText;
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    async function fetchData()
+    {
+        try {
+            const response = await fetch("/Home/Students/1", {
+                method: 'Get'
+            });
+            debugger;
+            var data = await response.json();
+            document.getElementById("data").innerHTML = data.lastName;
+        }
+        catch (error)
+        {
+        }
+    }
+</script>
+

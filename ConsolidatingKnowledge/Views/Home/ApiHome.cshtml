@@ -1,0 +1,26 @@
+﻿
+<div class="text-center">
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<input type="button" value="Test Consume Attr" onclick="testConsume(); return false;" /> <input type="button" value="Test Normal Post" />
+
+<script>
+    async function testConsume() {
+        debugger;
+        try {
+            const response = await fetch("/api/Consumers/PostId", {
+                method: 'POST',
+                body: {
+                    id: 2
+                }
+            });
+            var data = await response.text();
+            console.log(data);
+        }
+        catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+</script>
